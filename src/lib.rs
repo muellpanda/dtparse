@@ -361,6 +361,19 @@ impl ParserInfo {
             res.tzoffset = Some(0);
         }
 
+        let month = match res.month {
+            Some(m) => m,
+            None => return false,
+        };
+        let dim = match days_in_month(res.year.unwrap(), month) {
+            Ok(dim) => dim,
+            Err(_) => return false,
+        };
+
+        if res.day.unwrap() as u32 > dim {
+            return false;
+        }
+
         true
     }
 }
